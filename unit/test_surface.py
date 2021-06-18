@@ -9,7 +9,7 @@ from bspline import bSpline
 
 class TestSurface(unittest.TestCase):
 
-    def test_plotsurface(self):
+    def test_plotbsplinesurface(self):
         nu = [0., 0., 0., 0., 0.333333333, 0.666666666, 1., 1., 1., 1.]
         nv = [0., 0., 0., 0., 0.5, 1., 1., 1., 1.]
         su = bSpline(3, nu)

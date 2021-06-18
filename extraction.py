@@ -4,7 +4,6 @@
 # @FileName: try_extraction.py
 # @Software: PyCharm
 from surface import *
-from lagrange import *
 import numpy as np
 
 class LagrangeExtraction:
@@ -27,13 +26,9 @@ class LagrangeExtraction:
                 dof_idx += 1
         return M
 
-    def excraction(self):
-        dofs_u = np.linspace(0, 1, 100)
-        dofs_v = np.linspace(0, 1, 100)
+    def excraction(self, dofs_u, dofs_v):
+        # dofs_u = np.linspace(0, 1, 100)
+        # dofs_v = np.linspace(0, 1, 100)
         M = self.GenerateM(dofs_u, dofs_v)
-        pT = np.matmul(M, self.surface.ControlPoints)
-        return pT
-
-    def ExtractedSurface(self):
-
-        pass
+        pl = np.matmul(M, self.surface.ControlPoints)
+        return pl

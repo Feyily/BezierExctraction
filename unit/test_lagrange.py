@@ -37,3 +37,11 @@ class TestLagrange(unittest.TestCase):
             bsum += b[1]
         # 浮点数的验证不能用assertEqual
         self.assertLess(abs(bsum - 1.0), self.IgnoreEps)
+
+    def test_basismatrix(self):
+        samples = np.array(
+            [[0.12, 0.846], [2.578, 1.256], [0.14, 2.178], [2.567, 1.456], [0.996, 1.36]]
+        )
+        surface = LagrangeSurface(2, self.elements, 2, self.elements)
+        surface.BasisMatrix(samples)
+        pass

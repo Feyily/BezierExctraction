@@ -4,6 +4,7 @@
 # @FileName: surface.py
 # @Software: PyCharm
 from bspline import *
+from lagrange import *
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -48,3 +49,36 @@ class BsplineSurface:
         for s in samples:
             ax.scatter(s[0], s[1], s[2])
         plt.show()
+
+
+class LagrangeSurface:
+    def __init__(self, p, ele1, q, ele2, cp=None):
+        self.p = p
+        self.q = q
+        self.u_lagrange = Lagrange(p, ele1)
+        self.v_lagrange = Lagrange(q, ele2)
+        self.ndof = self.u_lagrange.ndof * self.v_lagrange.ndof
+        self.ControlPoints = cp
+
+    def BasisFunctions(self, p):
+        u, v = p[0], p[1]
+        ret = []
+        u_idx, u_bf = self.u_lagrange.BasisFunctions(u)
+        v_idx, v_bf = self.v_lagrange.BasisFunctions(v)
+        cnt = 0
+        for i in range(len(u_bf)):
+            for j in range(len(v_bf)):
+                el_offset = ((v_idx * self.u_lagrange.nelement) + u_idx)
+                ret.append([el_offset * (self.p + 1) * (self.q + 1) + cnt,
+                            u_bf[i] * v_bf[j]])
+                cnt += 1
+        return ret
+
+    def BasisMatrix(self, samples: np.ndarray):
+        shape = (len(samples), self.ndof)
+        ret = np.zeros(shape)
+        for i, p in enumerate(samples):
+            bfs = self.BasisFunctions(p)
+            for bf in bfs:
+                ret[i, bf[0]] = bf[1]
+        return ret
